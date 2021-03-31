@@ -11,15 +11,15 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.URL;
 
 @Entity
-@Table(name = "produto")
-public class Produto {
+@Table(name = "categoria")
+public class Categoria {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@NotNull
-	@Size(max = 255)
+	@Size(max = 50)
 	private String nome;
 	
 	@NotNull
@@ -29,18 +29,6 @@ public class Produto {
 	@NotNull
 	@URL
 	private String img;
-	
-	@NotNull
-	private double preco;
-	
-	@NotNull
-	private int qtdProduto;
-	
-	@NotNull
-	private boolean ativo;
-	
-	/*caso tenha promocao, colocar uma porcentagem em cima do valor final do produto*/
-	private double promocao; 
 
 	public long getId() {
 		return id;
@@ -74,36 +62,4 @@ public class Produto {
 		this.img = img;
 	}
 
-	public double getPreco() {
-		return preco;
-	}
-
-	public void setPreco(double preco) {
-		this.preco = preco;
-	}
-
-	public int getQtdProduto() {
-		return qtdProduto;
-	}
-
-	public void setQtdProduto(int qtdProduto) {
-		this.qtdProduto = qtdProduto;
-	}
-
-	public boolean isAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
-	}
-
-	public double getPromocao() {
-		return promocao;
-	}
-
-	public void setPromocao(double promocao) {
-		this.promocao = promocao;
-	}
-	
 }
