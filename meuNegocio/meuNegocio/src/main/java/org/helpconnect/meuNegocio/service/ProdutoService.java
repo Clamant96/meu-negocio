@@ -18,12 +18,13 @@ public class ProdutoService {
 	@Autowired
 	private ProdutoRepository produtoRepository;
 	
+	/*ADICIONAR PRODUTO AO USUARIO*/
 	public Produto compraProduto(long idProduto, long idUsuario) {
 		
 		Optional<Usuario> usuarioExistente = usuarioRepository.findById(idUsuario);
 		Optional<Produto> produtoExistente = produtoRepository.findById(idProduto);
 		
-		if(usuarioExistente.isPresent() && produtoExistente.isPresent()) {
+		if(usuarioExistente.isPresent() && produtoExistente.isPresent() && produtoExistente.get().getQtdProduto() > 0 && produtoExistente.get().isAtivo()) {
 			produtoExistente.get().getUsuarios().add(usuarioExistente.get());
 			
 			produtoRepository.save(produtoExistente.get());
@@ -40,6 +41,7 @@ public class ProdutoService {
 		return null;
 	}
 	
+	/*RETIRAR PRODUTO DO USUARIO*/
 	public Produto excluirProduto(long idProduto, long idUsuario) {
 		
 		Optional<Usuario> usuarioExistente = usuarioRepository.findById(idUsuario);
@@ -82,6 +84,10 @@ public class ProdutoService {
 		a=Math.floor(a*100) / 100;
 		
 		usuarioExistente.get().setCarrinho(a - preco);
+		
+		if(usuarioExistente.get().getCarrinho() < 0) {
+			usuarioExistente.get().setCarrinho(0);
+		}
 		
 		usuarioRepository.save(usuarioExistente.get());
 		
