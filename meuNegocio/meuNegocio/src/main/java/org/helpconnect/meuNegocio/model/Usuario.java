@@ -1,12 +1,20 @@
 package org.helpconnect.meuNegocio.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "usuario")
@@ -31,6 +39,10 @@ public class Usuario {
 	@NotNull
 	@Size(max = 50)
 	private String usuario;
+	
+	@ManyToMany(mappedBy = "usuarios", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnoreProperties({"nome", "descricao", "img", "preco", "qtdProduto", "ativo", "promocao", "usuarios"})
+	private List<Produto> produtos = new ArrayList<>();
 	
 	private double carrinho;
 
@@ -80,6 +92,14 @@ public class Usuario {
 
 	public void setCarrinho(double carrinho) {
 		this.carrinho = carrinho;
+	}
+
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
 	}
 
 }

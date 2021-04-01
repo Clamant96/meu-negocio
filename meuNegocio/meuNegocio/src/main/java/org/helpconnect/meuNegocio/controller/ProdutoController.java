@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.helpconnect.meuNegocio.model.Produto;
 import org.helpconnect.meuNegocio.repository.ProdutoRepository;
+import org.helpconnect.meuNegocio.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,9 @@ public class ProdutoController {
 	
 	@Autowired
 	private ProdutoRepository repository;
+	
+	@Autowired
+	private ProdutoService service;
 	
 	@GetMapping
 	public ResponseEntity<List<Produto>> findAllProduto(){
@@ -55,6 +59,20 @@ public class ProdutoController {
 	public ResponseEntity<Produto> postProduto(@RequestBody Produto produto){
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(produto));
+	}
+	
+	/*
+	 * EXPLICACAO URI:
+	 * 
+	 * 	/compra -> nome da tabela associativa
+	 * 	/usuarios -> nome da lista de usuarios dentro da classe Produto
+	 * 	/produtos -> nome da lista de produtos dentro da classe Usuario
+	 * 
+	 * */
+	@PutMapping("/compra/usuarios/{idProduto}/produtos/{idUsuario}")
+	public ResponseEntity<Produto> postCompra(@PathVariable long idProduto, @PathVariable long idUsuario){
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.compraProduto(idProduto, idUsuario));
 	}
 	
 	@PutMapping

@@ -1,14 +1,25 @@
 package org.helpconnect.meuNegocio.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.URL;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "produto")
@@ -41,6 +52,19 @@ public class Produto {
 	
 	/*caso tenha promocao, colocar uma porcentagem em cima do valor final do produto*/
 	private double promocao; 
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(
+	  name = "compra", 
+	  joinColumns = @JoinColumn(name = "produto_id"), 
+	  inverseJoinColumns = @JoinColumn(name = "usuario_id")
+	)
+	@JsonIgnoreProperties({"nome", "email", "senha", "usuario", "produtos", "carrinho"})
+	private List<Usuario> usuarios = new ArrayList<>();
+	
+	@ManyToOne
+	@JsonIgnoreProperties("produtos")
+	private Categoria categoria;
 
 	public long getId() {
 		return id;
@@ -104,6 +128,22 @@ public class Produto {
 
 	public void setPromocao(double promocao) {
 		this.promocao = promocao;
+	}
+
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 	
 }

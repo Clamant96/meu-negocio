@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.helpconnect.meuNegocio.model.Usuario;
 import org.helpconnect.meuNegocio.repository.UsuarioRepository;
+import org.helpconnect.meuNegocio.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,9 @@ public class UsuarioController {
 	
 	@Autowired
 	private UsuarioRepository repository;
+	
+	@Autowired
+	private ProdutoService service;
 	
 	@GetMapping
 	public ResponseEntity<List<Usuario>> findAllUsuario(){
@@ -55,6 +59,12 @@ public class UsuarioController {
 	public ResponseEntity<Usuario> putUsuario(@RequestBody Usuario usuario){
 		
 		return ResponseEntity.ok(repository.save(usuario));
+	}
+	
+	@DeleteMapping("/compra/produtos/{idUsuario}/usuarios/{idProduto}")
+	public void postCompra(@PathVariable long idProduto, @PathVariable long idUsuario){
+		
+		service.excluirProduto(idProduto, idUsuario);
 	}
 	
 	@DeleteMapping("/{id}")
