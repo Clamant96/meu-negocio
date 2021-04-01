@@ -102,5 +102,40 @@ public class ProdutoService {
 		produtoExistente.get().setQtdProduto(produtoExistente.get().getQtdProduto() + 1);
 		
 	}
+	
+	/*APLICAR DESCONTO PRODUTO*/
+	public void ajustarPreco(Produto produto) {
+		Optional<Produto> produtoExistente = produtoRepository.findById(produto.getId());
+		
+		double precoProduto = produtoExistente.get().getPreco();
+		double desconto = produtoExistente.get().getPreco() * produtoExistente.get().getPromocao();
+		double p = produto.getPreco();
+		
+		produtoExistente.get().setPreco(precoProduto - desconto);
+		
+		/*CASO O VALOR DO PRECO SEJA O MESMO E O VALOR DA PROMOCAO TAMBEM SEJA O MESMO*/
+		if((produtoExistente.get().getPreco() + desconto) == produto.getPreco() && produtoExistente.get().getPromocao() == produto.getPromocao()) {
+			if(p != produto.getPreco()) {
+				produto.setPreco(p);
+				produtoRepository.save(produto);
+				
+			}else {
+				produto.setPreco(produtoExistente.get().getPreco());
+				produtoRepository.save(produto);
+				
+			}
+			
+		/*CASO O VALOR DO PRECO SEJA DIFERENTE E O VALOR DA PROMOCAO TAMBEM SEJA DIFERENTE*/
+		}else {
+			produtoExistente.get().setPreco(p);
+			
+			double resultado = produtoExistente.get().getPreco() * produto.getPromocao();
+			produto.setPreco(produto.getPreco() - resultado);
+			
+			produtoRepository.save(produto);
+
+		}
+		
+	}
 
 }

@@ -77,8 +77,10 @@ public class ProdutoController {
 	
 	@PutMapping
 	public ResponseEntity<Produto> putProduto(@RequestBody Produto produto){
+		service.ajustarPreco(produto);
 		
 		return ResponseEntity.ok(repository.save(produto));
+		//return ResponseEntity.ok(repository.save(produto));
 	}
 	
 	@DeleteMapping("/{id}")
