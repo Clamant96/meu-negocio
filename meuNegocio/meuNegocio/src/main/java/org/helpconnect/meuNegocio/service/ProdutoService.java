@@ -25,6 +25,7 @@ public class ProdutoService {
 		Optional<Produto> produtoExistente = produtoRepository.findById(idProduto);
 		
 		if(usuarioExistente.isPresent() && produtoExistente.isPresent() && produtoExistente.get().getQtdProduto() > 0 && produtoExistente.get().isAtivo()) {
+			/*ADICIONA O USUARIO AO PRODUTO*/
 			produtoExistente.get().getUsuarios().add(usuarioExistente.get());
 			
 			produtoRepository.save(produtoExistente.get());
